@@ -4,7 +4,7 @@
 	Plugin URI: http://wordpress.org/extend/plugins/wordpress-beta-tester/
 	Description: Allows you to easily upgrade to Beta releases.
 	Author: Peter Westwood
-	Version: 0.5
+	Version: 0.6
 	Author URI: http://blog.ftwr.co.uk/
  */
 
@@ -47,6 +47,7 @@ class wp_beta_tester {
 		$this->mangle_wp_version();
 		wp_version_check();
 		$this->restore_wp_version();
+		$this->validate_upgrade_info();
 	}
 	
 	
@@ -54,11 +55,25 @@ class wp_beta_tester {
 		$this->mangle_wp_version();
 		_maybe_update_core();
 		$this->restore_wp_version();
+		$this->validate_upgrade_info();
 	}
 
 	function action_update_option_wp_beta_tester_stream() {
 		//Our option has changed so update the cached information pronto.
-		do_action(wp_version_check());
+		do_action('wp_version_check');
+	}
+	
+	/**
+	 * Validate the current upgrade info after we have tried to get a nightly version
+	 * 
+	 * If its not valid get the update info for the default version
+	 */
+	function validate_upgrade_info() {
+		$preferred = get_preferred_from_update_core();
+		$head = wp_remote_head($preferred->package);
+		if ( '404' == wp_remote_retrieve_response_code($head) ) {
+			wp_version_check();
+		}
 	}
 	
 	function mangle_wp_version(){
@@ -96,7 +111,9 @@ class wp_beta_tester {
 		if (!current_user_can('manage_options'))
 		{
 			wp_die( __('You do not have sufficient permissions to access this page.') );
-		}		
+		}
+		$preferred = get_preferred_from_update_core();
+
 ?>
 	<div class="wrap">
 	<?php screen_icon(); ?>
@@ -104,6 +121,11 @@ class wp_beta_tester {
 	<div class="updated fade"><p>
 		<?php _e('<strong>Please note:</strong> Once you have switched your blog to one of these beta versions of software it will not always be possible to downgrade as the database structure maybe updated during the development of a major release.', 'wp-beta-tester'); ?>
 	</div>
+		<?php if ('development' != $preferred->response) : ?>
+			<div class="updated fade"><p>
+				<?php _e('<strong>Please note:</strong> There are no development builds of the beta stream you have choosen available so you will receieve normal update notifications.', 'wp-beta-tester'); ?>
+			</div>
+		<?php endif;?>
 	<div>
 	<p><?php echo sprintf(__( 'By their nature these releases are unstable and should not be used anyplace where your data is important. So please <a href="%1$s">backup your database</a> before upgrading to a test release. In order to hear about the latest beta releases your best bet is to watch the <a href="%2$s">development blog</a> and the <a href="%3$s">beta forum</a>','wp-beta-tester'), 'http://codex.wordpress.org/Backing_Up_Your_Database', 'http://wordpress.org/development/', 'http://wordpress.org/support/forum/12'); ?></p>
 	<p><?php echo sprintf(__( 'Thank you for helping in testing WordPress please <a href="%s">report any bugs you find</a>.','wp-beta-tester'), 'http://core.trac.wordpress.org/newticket' ); ?></p>
