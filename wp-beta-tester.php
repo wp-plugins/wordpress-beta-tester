@@ -114,51 +114,47 @@ class wp_beta_tester {
 		}
 		$preferred = get_preferred_from_update_core();
 
-?>
-	<div class="wrap">
-	<?php screen_icon(); ?>
-	<h2><?php _e('Beta Testing WordPress','wp-beta-tester')?></h2>
-	<div class="updated fade"><p>
-		<?php _e('<strong>Please note:</strong> Once you have switched your blog to one of these beta versions of software it will not always be possible to downgrade as the database structure maybe updated during the development of a major release.', 'wp-beta-tester'); ?>
-	</div>
-		<?php if ('development' != $preferred->response) : ?>
-			<div class="updated fade"><p>
-				<?php _e('<strong>Please note:</strong> There are no development builds of the beta stream you have choosen available so you will receieve normal update notifications.', 'wp-beta-tester'); ?>
-			</div>
-		<?php endif;?>
-	<div>
-	<p><?php echo sprintf(__( 'By their nature these releases are unstable and should not be used anyplace where your data is important. So please <a href="%1$s">backup your database</a> before upgrading to a test release. In order to hear about the latest beta releases your best bet is to watch the <a href="%2$s">development blog</a> and the <a href="%3$s">beta forum</a>','wp-beta-tester'), 'http://codex.wordpress.org/Backing_Up_Your_Database', 'http://wordpress.org/development/', 'http://wordpress.org/support/forum/12'); ?></p>
-	<p><?php echo sprintf(__( 'Thank you for helping in testing WordPress please <a href="%s">report any bugs you find</a>.','wp-beta-tester'), 'http://core.trac.wordpress.org/newticket' ); ?></p>
+		?>
+	<div class="wrap"><?php screen_icon(); ?>
+		<h2><?php _e('Beta Testing WordPress','wp-beta-tester')?></h2>
+		<div class="updated fade">
+			<p><?php _e('<strong>Please note:</strong> Once you have switched your blog to one of these beta versions of software it will not always be possible to downgrade as the database structure maybe updated during the development of a major release.', 'wp-beta-tester'); ?></p>	
+		</div>
+			<?php if ('development' != $preferred->response) : ?>
+		<div class="updated fade">
+			<p><?php _e('<strong>Please note:</strong> There are no development builds of the beta stream you have choosen available so you will receieve normal update notifications.', 'wp-beta-tester'); ?></p>
+		</div>
+			<?php endif;?>
+		<div>
+			<p><?php echo sprintf(__( 'By their nature these releases are unstable and should not be used anyplace where your data is important. So please <a href="%1$s">backup your database</a> before upgrading to a test release. In order to hear about the latest beta releases your best bet is to watch the <a href="%2$s">development blog</a> and the <a href="%3$s">beta forum</a>','wp-beta-tester'), 'http://codex.wordpress.org/Backing_Up_Your_Database', 'http://wordpress.org/development/', 'http://wordpress.org/support/forum/12'); ?></p>
+			<p><?php echo sprintf(__( 'Thank you for helping in testing WordPress please <a href="%s">report any bugs you find</a>.','wp-beta-tester'), 'http://core.trac.wordpress.org/newticket' ); ?></p>
 	
-	<p><?php _e('By default your WordPress install uses the stable update stream, to return to this please deactivate this plugin', 'wp-beta-tester'); ?></p>
-	<form method="post" action="options.php">
-	<?php settings_fields('wp_beta_tester_options'); ?>
-	<fieldset><legend><?php _e('Please select the update stream you would like this blog to use:','wp-beta-tester')?></legend>
-	<?php
-	$stream = get_option('wp_beta_tester_stream','point');
-	?>
-		<table class="form-table">
-		<?php /*
-			<tr>
-				<th><label><input name="wp_beta_tester_stream" id="update-stream-beta-rc" type="radio" value="beta" class="tog" <?php checked('beta', $stream); ?> /><?php _e('Beta and Release Candidate','wp-beta-tester');?></label></th>
-				<td><?php _e('These are fairly stable releases made available in the build up to the final release or a version. It will track beta and release candidate releases for both major and point releases.','wp-beta-tester'); ?></td>
-			</tr>
-		       */ ?>
-			<tr>
-				<th><label><input name="wp_beta_tester_stream" id="update-stream-point-nightlies" type="radio" value="point" class="tog" <?php checked('point', $stream); ?> /><?php _e('Point release nightlies','wp-beta-tester');?></label></th>
-				<td><?php _e('This contains the work that is occuring on a branch in preperation for a x.x.x point release.  This should also be fairly stable but will be available before the branch is ready for beta.','wp-beta-tester'); ?></td>
-			</tr>
-			<tr>
-				<th><label><input name="wp_beta_tester_stream" id="update-stream-bleeding-nightlies" type="radio" value="unstable" class="tog" <?php checked('unstable', $stream); ?> /><?php _e('Bleeding edge nightlies','wp-beta-tester');?></label></th>
-				<td><?php _e('This is the bleeding edge development code which may be unstable at times. <em>Only use this if you really know what you are doing</em>.','wp-beta-tester'); ?></td>
-			</tr>
-		</table>
-	</fieldset>
-	<p class="submit">
-		<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-	</p>
-	</form>
-	<p><?php echo sprintf(__( 'Why don\'t you <a href="%s">head on over and upgrade now</a>.','wp-beta-tester' ), 'update-core.php');  ?></p>
+			<p><?php _e('By default your WordPress install uses the stable update stream, to return to this please deactivate this plugin', 'wp-beta-tester'); ?></p>
+			<form method="post" action="options.php"><?php settings_fields('wp_beta_tester_options'); ?>
+			<fieldset><legend><?php _e('Please select the update stream you would like this blog to use:','wp-beta-tester')?></legend>
+				<?php
+				$stream = get_option('wp_beta_tester_stream','point');
+				?>
+			<table class="form-table">
+				<tr>
+					<th><label><input name="wp_beta_tester_stream"
+						id="update-stream-point-nightlies" type="radio" value="point"
+						class="tog" <?php checked('point', $stream); ?> /><?php _e('Point release nightlies','wp-beta-tester');?></label></th>
+					<td><?php _e('This contains the work that is occuring on a branch in preperation for a x.x.x point release.  This should also be fairly stable but will be available before the branch is ready for beta.','wp-beta-tester'); ?></td>
+				</tr>
+				<tr>
+					<th><label><input name="wp_beta_tester_stream"
+						id="update-stream-bleeding-nightlies" type="radio" value="unstable"
+						class="tog" <?php checked('unstable', $stream); ?> /><?php _e('Bleeding edge nightlies','wp-beta-tester');?></label></th>
+					<td><?php _e('This is the bleeding edge development code which may be unstable at times. <em>Only use this if you really know what you are doing</em>.','wp-beta-tester'); ?></td>
+				</tr>
+			</table>
+			</fieldset>
+			<p class="submit"><input type="submit" class="button-primary"
+				value="<?php _e('Save Changes') ?>" /></p>
+			</form>
+			<p><?php echo sprintf(__( 'Why don\'t you <a href="%s">head on over and upgrade now</a>.','wp-beta-tester' ), 'update-core.php');  ?></p>
+		</div>
 	</div>
 <?php
 	}
