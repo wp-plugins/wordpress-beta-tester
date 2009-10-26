@@ -4,7 +4,7 @@
 	Plugin URI: http://wordpress.org/extend/plugins/wordpress-beta-tester/
 	Description: Allows you to easily upgrade to Beta releases.
 	Author: Peter Westwood
-	Version: 0.6
+	Version: 0.7-alpha
 	Author URI: http://blog.ftwr.co.uk/
  */
 
