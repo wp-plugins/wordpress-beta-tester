@@ -108,7 +108,7 @@ class wp_beta_tester {
 	}
 
 	function display_page() {
-		if (!current_user_can('manage_options'))
+		if (!current_user_can('update_plugins'))
 		{
 			wp_die( __('You do not have sufficient permissions to access this page.') );
 		}
