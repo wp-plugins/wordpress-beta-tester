@@ -24,10 +24,12 @@ class wp_beta_tester {
 	}
 	
 	function action_admin_menu() {
-		add_management_page(__('Beta Testing WordPress','wp_beta_tester'), 'Beta Testing', 'update_plugins', 'wp_beta_tester', array(&$this,'display_page'));
+		add_management_page(__('Beta Testing WordPress','wp-beta-tester'), 'Beta Testing', 'update_plugins', 'wp_beta_tester', array(&$this,'display_page'));
 	}
 	
 	function action_init() {
+		// Load our textdomain
+		load_plugin_textdomain('wp-beta-tester', false , basename(dirname(__FILE__)).'/languages');
 		//Remove the default verson check function so we can add our wrapper function which plays with the version number
 		remove_action( 'wp_version_check', 'wp_version_check' );
 		add_action( 'wp_version_check', array(&$this, 'action_wp_version_check') );
@@ -126,8 +128,12 @@ class wp_beta_tester {
 		</div>
 			<?php endif;?>
 		<div>
-			<p><?php echo sprintf(__( 'By their nature these releases are unstable and should not be used anyplace where your data is important. So please <a href="%1$s">backup your database</a> before upgrading to a test release. In order to hear about the latest beta releases your best bet is to watch the <a href="%2$s">development blog</a> and the <a href="%3$s">beta forum</a>','wp-beta-tester'), 'http://codex.wordpress.org/Backing_Up_Your_Database', 'http://wordpress.org/development/', 'http://wordpress.org/support/forum/12'); ?></p>
-			<p><?php echo sprintf(__( 'Thank you for helping in testing WordPress please <a href="%s">report any bugs you find</a>.','wp-beta-tester'), 'http://core.trac.wordpress.org/newticket' ); ?></p>
+			<p><?php echo sprintf(__(	'By their nature these releases are unstable and should not be used anyplace where your data is important. So please <a href="%1$s">backup your database</a> before upgrading to a test release. In order to hear about the latest beta releases your best bet is to watch the <a href="%2$s">development blog</a> and the <a href="%3$s">beta forum</a>','wp-beta-tester'),
+										_x('http://codex.wordpress.org/Backing_Up_Your_Database', 'Url to database backup instructions', 'wp-beta-tester'),
+										_x('http://wordpress.org/development/', 'Url to development blog','wp-beta-tester'),
+										_x('http://wordpress.org/support/forum/12', 'Url to beta support forum', 'wp-beta-tester') ); ?></p>
+			<p><?php echo sprintf(__(	'Thank you for helping in testing WordPress please <a href="%s">report any bugs you find</a>.', 'wp-beta-tester'),
+										_x('http://core.trac.wordpress.org/newticket', 'Url to raise a new trac ticket', 'wp-beta-tester') ); ?></p>
 	
 			<p><?php _e('By default your WordPress install uses the stable update stream, to return to this please deactivate this plugin', 'wp-beta-tester'); ?></p>
 			<form method="post" action="options.php"><?php settings_fields('wp_beta_tester_options'); ?>
