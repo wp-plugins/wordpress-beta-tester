@@ -24,7 +24,7 @@ class wp_beta_tester {
 	}
 	
 	function action_admin_menu() {
-		add_management_page(__('Beta Testing WordPress','wp-beta-tester'), 'Beta Testing', 'update_plugins', 'wp_beta_tester', array(&$this,'display_page'));
+		add_management_page(__('Beta Testing WordPress','wp-beta-tester'), __('Beta Testing','wp-beta-tester'), 'update_plugins', 'wp_beta_tester', array(&$this,'display_page'));
 	}
 	
 	function action_init() {
@@ -65,13 +65,20 @@ class wp_beta_tester {
 		do_action('wp_version_check');
 	}
 	
+	function _get_preferred_from_update_core() {
+		if (!function_exists('get_preferred_from_update_core') )
+			require_once(ABSPATH . 'wp-admin/includes/update.php');
+
+		return get_preferred_from_update_core();
+	}
+	
 	/**
 	 * Validate the current upgrade info after we have tried to get a nightly version
 	 * 
 	 * If its not valid get the update info for the default version
 	 */
 	function validate_upgrade_info() {
-		$preferred = get_preferred_from_update_core();
+		$preferred = $this->_get_preferred_from_update_core();
 		$head = wp_remote_head($preferred->package);
 		if ( '404' == wp_remote_retrieve_response_code($head) ) {
 			wp_version_check();
@@ -83,7 +90,7 @@ class wp_beta_tester {
 		$this->real_wp_version = $wp_version;
 
 		$stream = get_option('wp_beta_tester_stream','point');
-		$preferred = get_preferred_from_update_core();
+		$preferred = $this->_get_preferred_from_update_core();
 
 		switch ($stream) {
 			case 'point':
@@ -114,7 +121,7 @@ class wp_beta_tester {
 		{
 			wp_die( __('You do not have sufficient permissions to access this page.') );
 		}
-		$preferred = get_preferred_from_update_core();
+		$preferred = $this->_get_preferred_from_update_core();
 
 		?>
 	<div class="wrap"><?php screen_icon(); ?>
