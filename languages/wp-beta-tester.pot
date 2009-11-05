@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wordpress-beta-tester\n"
-"POT-Creation-Date: 2009-11-01 09:40+0000\n"
+"POT-Creation-Date: 2009-11-05 21:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,15 +15,19 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-beta-tester.php:27 wp-beta-tester.php:121
+#: wp-beta-tester.php:27 wp-beta-tester.php:128
 msgid "Beta Testing WordPress"
 msgstr ""
 
-#: wp-beta-tester.php:115
+#: wp-beta-tester.php:27
+msgid "Beta Testing"
+msgstr ""
+
+#: wp-beta-tester.php:122
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: wp-beta-tester.php:123
+#: wp-beta-tester.php:130
 msgid ""
 "<strong>Please note:</strong> Once you have switched your blog to one of "
 "these beta versions of software it will not always be possible to downgrade "
@@ -31,14 +35,14 @@ msgid ""
 "release."
 msgstr ""
 
-#: wp-beta-tester.php:127
+#: wp-beta-tester.php:134
 msgid ""
 "<strong>Please note:</strong> There are no development builds of the beta "
 "stream you have choosen available so you will receieve normal update "
 "notifications."
 msgstr ""
 
-#: wp-beta-tester.php:131
+#: wp-beta-tester.php:138
 #, php-format
 msgid ""
 "By their nature these releases are unstable and should not be used anyplace "
@@ -48,69 +52,69 @@ msgid ""
 "\">development blog</a> and the <a href=\"%3$s\">beta forum</a>"
 msgstr ""
 
-#: wp-beta-tester.php:132
+#: wp-beta-tester.php:139
 msgctxt "Url to database backup instructions"
 msgid "http://codex.wordpress.org/Backing_Up_Your_Database"
 msgstr ""
 
-#: wp-beta-tester.php:133
+#: wp-beta-tester.php:140
 msgctxt "Url to development blog"
 msgid "http://wordpress.org/development/"
 msgstr ""
 
-#: wp-beta-tester.php:134
+#: wp-beta-tester.php:141
 msgctxt "Url to beta support forum"
 msgid "http://wordpress.org/support/forum/12"
 msgstr ""
 
-#: wp-beta-tester.php:135
+#: wp-beta-tester.php:142
 #, php-format
 msgid ""
 "Thank you for helping in testing WordPress please <a href=\"%s\">report any "
 "bugs you find</a>."
 msgstr ""
 
-#: wp-beta-tester.php:136
+#: wp-beta-tester.php:143
 msgctxt "Url to raise a new trac ticket"
 msgid "http://core.trac.wordpress.org/newticket"
 msgstr ""
 
-#: wp-beta-tester.php:138
+#: wp-beta-tester.php:145
 msgid ""
 "By default your WordPress install uses the stable update stream, to return "
 "to this please deactivate this plugin"
 msgstr ""
 
-#: wp-beta-tester.php:140
+#: wp-beta-tester.php:147
 msgid "Please select the update stream you would like this blog to use:"
 msgstr ""
 
-#: wp-beta-tester.php:148
+#: wp-beta-tester.php:155
 msgid "Point release nightlies"
 msgstr ""
 
-#: wp-beta-tester.php:149
+#: wp-beta-tester.php:156
 msgid ""
 "This contains the work that is occuring on a branch in preperation for a x.x."
 "x point release.  This should also be fairly stable but will be available "
 "before the branch is ready for beta."
 msgstr ""
 
-#: wp-beta-tester.php:154
+#: wp-beta-tester.php:161
 msgid "Bleeding edge nightlies"
 msgstr ""
 
-#: wp-beta-tester.php:155
+#: wp-beta-tester.php:162
 msgid ""
 "This is the bleeding edge development code which may be unstable at times. "
 "<em>Only use this if you really know what you are doing</em>."
 msgstr ""
 
-#: wp-beta-tester.php:160
+#: wp-beta-tester.php:167
 msgid "Save Changes"
 msgstr ""
 
-#: wp-beta-tester.php:162
+#: wp-beta-tester.php:169
 #, php-format
 msgid "Why don't you <a href=\"%s\">head on over and upgrade now</a>."
 msgstr ""
