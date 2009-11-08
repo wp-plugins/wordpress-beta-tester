@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal%4
 Contributors: westi
 Tested up to: 2.9
 Requires at least: 2.7.1
-Stable Tag: 0.6
+Stable Tag: 0.7
 
 == Description ==
 This plugin provides an easy way to get involved with Beta testing WordPress.
@@ -24,6 +24,11 @@ Don't forget to backup before your start!
 
 = v0.6 = 
 * Update the code to validate the returned upgrade url so as to ensure that we only offer to upgrade to builds that exist.
+
+= v0.7 =
+* Completed support for translations
+* Added translation files for Japanese
+* Fixed issue with calls to get_preferred_from_update_core() when running on a cron hook.
 
 == Installation ==
 
