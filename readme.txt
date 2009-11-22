@@ -19,16 +19,16 @@ Don't forget to backup before your start!
 
 == Changelog ==
 
-= v0.5 =
-* Initial Release containing support for switching your blog to point release nightlies or bleeding edge nightlies
-
-= v0.6 = 
-* Update the code to validate the returned upgrade url so as to ensure that we only offer to upgrade to builds that exist.
-
 = v0.7 =
 * Completed support for translations
 * Added translation files for Japanese
 * Fixed issue with calls to get_preferred_from_update_core() when running on a cron hook.
+
+= v0.6 = 
+* Update the code to validate the returned upgrade url so as to ensure that we only offer to upgrade to builds that exist.
+
+= v0.5 =
+* Initial Release containing support for switching your blog to point release nightlies or bleeding edge nightlies
 
 == Installation ==
 
