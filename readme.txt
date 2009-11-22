@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal%4
 Contributors: westi
 Tested up to: 2.9
 Requires at least: 2.7.1
-Stable Tag: 0.7
+Stable Tag: 0.8
 
 == Description ==
 This plugin provides an easy way to get involved with Beta testing WordPress.
@@ -18,6 +18,10 @@ For the more adventerous there is the option to switch to the bleeding edge of d
 Don't forget to backup before your start!
 
 == Changelog ==
+
+= v0.8 = 
+* Fixed noticed on dashboard after upgrade and before the update api data was refreshed
+* Added translation files for German, Bosnian, Italian, Polish and Romanian.
 
 = v0.7 =
 * Completed support for translations
