@@ -21,6 +21,7 @@ Don't forget to backup before your start!
 
 = v0.81 =
 * Fixed an issue in the version mangling for the bleeding edge develpment track which didn't handle the x.9 => y.0 transition
+* Added translation files for Albanian and French.
 
 = v0.8 = 
 * Fixed noticed on dashboard after upgrade and before the update api data was refreshed
