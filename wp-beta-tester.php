@@ -4,7 +4,7 @@
 	Plugin URI: http://wordpress.org/extend/plugins/wordpress-beta-tester/
 	Description: Allows you to easily upgrade to Beta releases.
 	Author: Peter Westwood
-	Version: 0.81
+	Version: 0.90
 	Author URI: http://blog.ftwr.co.uk/
  */
 
@@ -17,6 +17,17 @@ class wp_beta_tester {
 		add_action('init', array(&$this, 'action_init'));
 		add_action('admin_head-update-core.php', array(&$this, 'action_admin_head_update_core_php'));
 		add_action('update_option_wp_beta_tester_stream', array(&$this, 'action_update_option_wp_beta_tester_stream'));
+		add_action('admin_head-plugins.php', array(&$this, 'action_admin_head_plugins_php'));
+		add_action('admin_head-update-core.php', array(&$this, 'action_admin_head_plugins_php'));
+	}
+	
+	function action_admin_head_plugins_php() {
+		//Can output an error here if current config drives version backwards
+		if ( $this->check_if_settings_downgrade() ) {
+			?>
+				<div id="message" class="error"><p><?php printf( __('<strong>Error:</strong> Your current <a href="%1$s">WordPress Beta Tester plugin configuration</a> will downgrade your install to a previous version - Please reconfigure it.', 'wp-beta-tester'), admin_url('tools.php?page=wp_beta_tester') ) ?></p></div>
+			<?php
+		}
 	}
 	
 	function action_admin_init() {
@@ -120,6 +131,16 @@ class wp_beta_tester {
 		$wp_version = $this->real_wp_version;
 	}
 	
+	function check_if_settings_downgrade() {
+		global $wp_version;
+		$this->restore_wp_version();
+		$wp_real_version = $wp_version;
+		$this->mangle_wp_version();
+		$wp_mangled_version = $wp_version;
+		$this->restore_wp_version();
+		return version_compare($wp_mangled_version, $wp_real_version, 'lt');
+	}
+	
 	function validate_setting($setting) {
 		if (!in_array($setting, array('point','unstable')))
 		{
@@ -146,6 +167,7 @@ class wp_beta_tester {
 			<p><?php _e('<strong>Please note:</strong> There are no development builds of the beta stream you have choosen available so you will receieve normal update notifications.', 'wp-beta-tester'); ?></p>
 		</div>
 			<?php endif;?>
+			<?php $this->action_admin_head_plugins_php(); //Check configuration?>
 		<div>
 			<p><?php echo sprintf(__(	'By their nature these releases are unstable and should not be used anyplace where your data is important. So please <a href="%1$s">backup your database</a> before upgrading to a test release. In order to hear about the latest beta releases your best bet is to watch the <a href="%2$s">development blog</a> and the <a href="%3$s">beta forum</a>','wp-beta-tester'),
 										_x('http://codex.wordpress.org/Backing_Up_Your_Database', 'Url to database backup instructions', 'wp-beta-tester'),
