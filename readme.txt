@@ -49,7 +49,7 @@ Don't forget to backup before your start!
 1. Upload to your plugins folder, usually `wp-content/plugins/`
 2. Activate the plugin on the plugin screen.
 3. Navigate to Tools ... Beta Testing to configure the plugin.
-4. Visit Tools ... Upgrade and update to the latest Beta Release.
+4. Visit Dashboard ... Upgrade (Or Tools ... Upgrade in versions before 3.0) and update to the latest Beta Release.
 
 == Screenshots ==
 
