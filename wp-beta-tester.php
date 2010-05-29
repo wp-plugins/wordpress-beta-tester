@@ -4,12 +4,13 @@
 	Plugin URI: http://wordpress.org/extend/plugins/wordpress-beta-tester/
 	Description: Allows you to easily upgrade to Beta releases.
 	Author: Peter Westwood
-	Version: 0.91
+	Version: 0.92
 	Author URI: http://blog.ftwr.co.uk/
  */
 
 class wp_beta_tester {
 	var $real_wp_version;
+	var $real_wpmu_version = false;
 	
 	function wp_beta_tester() {
 		add_action('admin_init', array(&$this, 'action_admin_init'));
@@ -105,7 +106,7 @@ class wp_beta_tester {
 	function mangle_wp_version(){
 		global $wp_version;
 		$this->real_wp_version = $wp_version;
-
+		
 		$stream = get_option('wp_beta_tester_stream','point');
 		$preferred = $this->_get_preferred_from_update_core();
 
@@ -122,13 +123,27 @@ class wp_beta_tester {
 				}
 				
 				$wp_version = $versions[0] . '.' . $versions[1] . '-wp-beta-tester';
+
+				//Support for WordPress mu 2.9.2 -> 3.0 RC
+				if ( isset($GLOBALS['wpmu_version'] ) ) {
+					$this->real_wpmu_version = $GLOBALS['wpmu_version'];
+					$GLOBALS['wpmu_version'] = $wp_version;
+				}		
+				
 				break;
 		}
+
 	}
 	
 	function restore_wp_version() {
 		global $wp_version;
 		$wp_version = $this->real_wp_version;
+
+		//Support for WordPress mu 2.9.2 -> 3.0 RC
+		if ( $this->real_wpmu_version != false ) {
+			$this->real_wpmu_version = $GLOBALS['wpmu_version'];
+			$GLOBALS['wpmu_version'] = $wp_version;
+		}
 	}
 	
 	function check_if_settings_downgrade() {
