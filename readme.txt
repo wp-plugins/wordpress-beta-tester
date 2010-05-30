@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal%4
 Contributors: westi
 Tested up to: 2.9
 Requires at least: 2.7.1
-Stable Tag: 0.91
+Stable Tag: 0.92
 
 == Description ==
 This plugin provides an easy way to get involved with Beta testing WordPress.
@@ -18,6 +18,9 @@ For the more adventerous there is the option to switch to the bleeding edge of d
 Don't forget to backup before your start!
 
 == Changelog ==
+
+= v0.92 =
+* Add support for converting WordPress mu installs over to WordPress 3.0 RC 1 dev track
 
 = v0.91 =
 * Fix bug which causes the message to always display
@@ -43,6 +46,12 @@ Don't forget to backup before your start!
 
 = v0.5 =
 * Initial Release containing support for switching your blog to point release nightlies or bleeding edge nightlies
+
+== Upgrade Notice ==
+
+= 0.92 =
+Added support for upgrading WordPress MU to WordPress 3.0 dev builds using built-in upgrader.
+Updated Russian language pack.
 
 == Installation ==
 
