@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal%4
 Contributors: westi
 Tested up to: 3.0
 Requires at least: 2.9.0
-Stable Tag: 0.92
+Stable Tag: 0.93
 
 == Description ==
 This plugin provides an easy way to get involved with Beta testing WordPress.
@@ -18,6 +18,9 @@ For the more adventerous there is the option to switch to the bleeding edge of d
 Don't forget to backup before your start!
 
 == Changelog ==
+
+= v0.93 =
+* Fixed a bug in the point release nightlies stream whereby we displayed the downgrade message erroneously
 
 = v0.92 =
 * Add support for converting WordPress mu installs over to WordPress 3.0 RC 1 dev track
