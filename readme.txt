@@ -2,8 +2,8 @@
 Tags: beta, advanced, testing
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal%40ftwr%2eco%2euk&item_name=Peter%20Westwood%20WordPress%20Plugins&no_shipping=1&cn=Donation%20Notes&tax=0&currency_code=GBP&bn=PP%2dDonationsBF&charset=UTF%2d8
 Contributors: westi
-Tested up to: 3.0
-Requires at least: 2.9.0
+Tested up to: 3.1
+Requires at least: 3.0.5
 Stable Tag: 0.93
 
 == Description ==
