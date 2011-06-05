@@ -4,7 +4,7 @@
 	Plugin URI: http://wordpress.org/extend/plugins/wordpress-beta-tester/
 	Description: Allows you to easily upgrade to Beta releases.
 	Author: Peter Westwood
-	Version: 0.93
+	Version: 0.94
 	Author URI: http://blog.ftwr.co.uk/
  */
 
@@ -16,8 +16,7 @@ class wp_beta_tester {
 		add_action('admin_init', array(&$this, 'action_admin_init'));
 		add_action('admin_menu', array(&$this, 'action_admin_menu'));
 		add_action('init', array(&$this, 'action_init'));
-		add_action('admin_head-update-core.php', array(&$this, 'action_admin_head_update_core_php'));
-		add_action('update_option_wp_beta_tester_stream', array(&$this, 'action_update_option_wp_beta_tester_stream'));
+		add_filter('pre_http_request', array(&$this, 'filter_http_request'), 10, 3);
 		add_action('admin_head-plugins.php', array(&$this, 'action_admin_head_plugins_php'));
 		add_action('admin_head-update-core.php', array(&$this, 'action_admin_head_plugins_php'));
 	}
@@ -42,36 +41,25 @@ class wp_beta_tester {
 	function action_init() {
 		// Load our textdomain
 		load_plugin_textdomain('wp-beta-tester', false , basename(dirname(__FILE__)).'/languages');
-		//Remove the default verson check function so we can add our wrapper function which plays with the version number
-		remove_action( 'wp_version_check', 'wp_version_check' );
-		add_action( 'wp_version_check', array(&$this, 'action_wp_version_check') );
-		remove_action( 'admin_init', '_maybe_update_core' );
-		if (function_exists('_maybe_update_core')) {
-			add_action( 'admin_init', array(&$this, 'action__maybe_update_core') );
-		}
 	}
 	
-	function action_admin_head_update_core_php() {
-		//On the update page wp_version_check is called directly so we need to remangle the info by calling it again
-		$this->action_wp_version_check();
-	}
-	
-	function action_wp_version_check()
-	{
-		$this->mangle_wp_version();
-		wp_version_check();
-		$this->restore_wp_version();
-		$this->validate_upgrade_info();
-	}
-	
-	
-	function action__maybe_update_core() {
-		$this->mangle_wp_version();
-		_maybe_update_core();
-		$this->restore_wp_version();
-		$this->validate_upgrade_info();
-	}
+	function filter_http_request($result, $args, $url) {
+		if ( $result || isset($args['_beta_tester']) )
+			return $result;
+		if ( 0 !== strpos($url, 'http://api.wordpress.org/core/version-check/') )
+			return $result;
 
+		// It's a core-update request.
+		$args['_beta_tester'] = true;
+
+		global $wp_version, $wpmu_version;
+		$url = str_replace('version=' .  $wp_version, 'version=' . $this->mangle_wp_version(), $url);
+		if ( !empty($wpmu_version) ) // old 2.9.2 WPMU
+			$url = str_replace('wpmu_version=' .  $wpmu_version, 'wpmu_version=' . $this->mangle_wp_version(), $url);
+
+		return wp_remote_get($url, $args);
+	}
+	
 	function action_update_option_wp_beta_tester_stream() {
 		//Our option has changed so update the cached information pronto.
 		do_action('wp_version_check');
@@ -104,9 +92,6 @@ class wp_beta_tester {
 	}
 	
 	function mangle_wp_version(){
-		global $wp_version;
-		$this->real_wp_version = $wp_version;
-		
 		$stream = get_option('wp_beta_tester_stream','point');
 		$preferred = $this->_get_preferred_from_update_core();
 
@@ -126,35 +111,15 @@ class wp_beta_tester {
 				
 				$wp_version = $versions[0] . '.' . $versions[1] . '-wp-beta-tester';
 
-				//Support for WordPress mu 2.9.2 -> 3.0 RC
-				if ( isset($GLOBALS['wpmu_version'] ) ) {
-					$this->real_wpmu_version = $GLOBALS['wpmu_version'];
-					$GLOBALS['wpmu_version'] = $wp_version;
-				}		
-				
 				break;
 		}
-
-	}
-	
-	function restore_wp_version() {
-		global $wp_version;
-		$wp_version = $this->real_wp_version;
-
-		//Support for WordPress mu 2.9.2 -> 3.0 RC
-		if ( $this->real_wpmu_version != false ) {
-			$this->real_wpmu_version = $GLOBALS['wpmu_version'];
-			$GLOBALS['wpmu_version'] = $wp_version;
-		}
+		return $wp_version;
 	}
 	
 	function check_if_settings_downgrade() {
 		global $wp_version;
-		$this->restore_wp_version();
 		$wp_real_version = explode('-', $wp_version);
-		$this->mangle_wp_version();
-		$wp_mangled_version = explode('-', $wp_version);
-		$this->restore_wp_version();
+		$wp_mangled_version = explode('-', $this->mangle_wp_version());
 		return version_compare($wp_mangled_version[0], $wp_real_version[0], 'lt');
 	}
 	
