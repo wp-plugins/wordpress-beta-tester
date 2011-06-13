@@ -19,6 +19,10 @@ Don't forget to backup before your start!
 
 == Changelog ==
 
+= 0.95 =
+* Further WordPress 3.2 compatibility fixes from nacin
+* Addition of activate and deactivate hooks to clear down the update core transient.
+
 = 0.94 =
 * WordPress 3.2 compatibility fixes from dd32
 
@@ -54,6 +58,9 @@ Don't forget to backup before your start!
 * Initial Release containing support for switching your blog to point release nightlies or bleeding edge nightlies
 
 == Upgrade Notice ==
+
+= 0.95 =
+* Further WordPress 3.2 compatibility fixes from nacin
 
 = 0.94 =
 * WordPress 3.2 compatibility fixes from dd32

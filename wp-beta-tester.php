@@ -4,10 +4,25 @@
 	Plugin URI: http://wordpress.org/extend/plugins/wordpress-beta-tester/
 	Description: Allows you to easily upgrade to Beta releases.
 	Author: Peter Westwood
-	Version: 0.94
+	Version: 0.95
 	Author URI: http://blog.ftwr.co.uk/
- */
+	License: GPL v2 or later
+*/
+/*	Copyright 2009-2011  Peter Westwood  (email : peter.westwood@ftwr.co.uk)
 
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License, version 2, as 
+	published by the Free Software Foundation.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 class wp_beta_tester {
 	var $real_wp_version;
 	var $real_wpmu_version = false;
@@ -16,12 +31,14 @@ class wp_beta_tester {
 		add_action('admin_init', array(&$this, 'action_admin_init'));
 		add_action('admin_menu', array(&$this, 'action_admin_menu'));
 		add_action('init', array(&$this, 'action_init'));
+		add_action('update_option_wp_beta_tester_stream', array(&$this, 'action_update_option_wp_beta_tester_stream'));
 		add_filter('pre_http_request', array(&$this, 'filter_http_request'), 10, 3);
 		add_action('admin_head-plugins.php', array(&$this, 'action_admin_head_plugins_php'));
 		add_action('admin_head-update-core.php', array(&$this, 'action_admin_head_plugins_php'));
 	}
 	
 	function action_admin_head_plugins_php() {
+		wp_version_check();
 		//Can output an error here if current config drives version backwards
 		if ( $this->check_if_settings_downgrade() ) {
 			?>
@@ -78,22 +95,12 @@ class wp_beta_tester {
 		return $preferred;
 	}
 	
-	/**
-	 * Validate the current upgrade info after we have tried to get a nightly version
-	 * 
-	 * If its not valid get the update info for the default version
-	 */
-	function validate_upgrade_info() {
-		$preferred = $this->_get_preferred_from_update_core();
-		$head = wp_remote_head($preferred->package);
-		if ( '404' == wp_remote_retrieve_response_code($head) ) {
-			wp_version_check();
-		}
-	}
-	
 	function mangle_wp_version(){
 		$stream = get_option('wp_beta_tester_stream','point');
 		$preferred = $this->_get_preferred_from_update_core();
+		// If we're getting no updates back from get_preferred_from_update_core(), let an HTTP request go through unmangled.
+		if ( ! isset( $preferred->current ) )
+			return $GLOBALS['wp_version'];
 
 		switch ($stream) {
 			case 'point':
@@ -191,4 +198,10 @@ class wp_beta_tester {
 /* Initialise outselves */
 add_action('plugins_loaded', create_function('','global $wp_beta_tester_instance; $wp_beta_tester_instance = new wp_beta_tester();'));
 
+// Clear down
+function wordpress_beta_tester_deactivate_or_activate() {
+	delete_site_transient( 'update_core' );
+}
+register_activation_hook( __FILE__, 'wordpress_beta_tester_deactivate_or_activate' );
+register_deactivation_hook( __FILE__, 'wordpress_beta_tester_deactivate_or_activate' );
 ?>
