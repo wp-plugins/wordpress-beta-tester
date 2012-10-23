@@ -4,7 +4,7 @@
 	Plugin URI: http://wordpress.org/extend/plugins/wordpress-beta-tester/
 	Description: Allows you to easily upgrade to Beta releases.
 	Author: Peter Westwood
-	Version: 0.95
+	Version: 0.96-alpha
 	Author URI: http://blog.ftwr.co.uk/
 	License: GPL v2 or later
 */
@@ -38,6 +38,12 @@ class wp_beta_tester {
 	}
 	
 	function action_admin_head_plugins_php() {
+		// Workaround the check throttling in wp_version_check()
+		$st = get_site_transient( 'update_core' );
+		if ( is_object( $st ) ) {
+			$st->last_checked = 0;
+			set_site_transient( 'update_core', $st );
+		}
 		wp_version_check();
 		//Can output an error here if current config drives version backwards
 		if ( $this->check_if_settings_downgrade() ) {
