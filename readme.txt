@@ -2,7 +2,7 @@
 Tags: beta, advanced, testing
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal%40ftwr%2eco%2euk&item_name=Peter%20Westwood%20WordPress%20Plugins&no_shipping=1&cn=Donation%20Notes&tax=0&currency_code=GBP&bn=PP%2dDonationsBF&charset=UTF%2d8
 Contributors: westi
-Tested up to: 3.5
+Tested up to: 3.7
 Requires at least: 3.0.5
 Stable Tag: 0.96
 
@@ -18,6 +18,9 @@ For the more adventerous there is the option to switch to the bleeding edge of d
 Don't forget to backup before your start!
 
 == Changelog ==
+
+= 0.97 =
+* Force HTTPS for all api.wordpress.org requests.
 
 = 0.96 =
 * WordPress 3.4.x compatibility fixes
@@ -61,6 +64,9 @@ Don't forget to backup before your start!
 * Initial Release containing support for switching your blog to point release nightlies or bleeding edge nightlies
 
 == Upgrade Notice ==
+
+= 0.97 =
+* This update forces https for all WordPress.org API requests please report issues here: http://core.trac.wordpress.org/ticket/18577
 
 = 0.95 =
 * Further WordPress 3.2 compatibility fixes from nacin
