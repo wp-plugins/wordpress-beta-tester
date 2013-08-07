@@ -4,7 +4,7 @@
 	Plugin URI: http://wordpress.org/extend/plugins/wordpress-beta-tester/
 	Description: Allows you to easily upgrade to Beta releases.
 	Author: Peter Westwood
-	Version: 0.96
+	Version: 0.97
 	Author URI: http://blog.ftwr.co.uk/
 	License: GPL v2 or later
 */
@@ -69,18 +69,27 @@ class wp_beta_tester {
 	function filter_http_request($result, $args, $url) {
 		if ( $result || isset($args['_beta_tester']) )
 			return $result;
-		if ( 0 !== strpos($url, 'http://api.wordpress.org/core/version-check/') )
+		if ( 0 !== strpos($url, 'http://api.wordpress.org/') )
 			return $result;
 
 		// It's a core-update request.
 		$args['_beta_tester'] = true;
+		$url = str_replace( 'http://', 'https://', $url );
 
-		global $wp_version, $wpmu_version;
-		$url = str_replace('version=' .  $wp_version, 'version=' . $this->mangle_wp_version(), $url);
-		if ( !empty($wpmu_version) ) // old 2.9.2 WPMU
-			$url = str_replace('wpmu_version=' .  $wpmu_version, 'wpmu_version=' . $this->mangle_wp_version(), $url);
+		if ( 0 !== strpos( $url, 'https://api.wordpress.org/core/version-check/' ) ) {
+			global $wp_version, $wpmu_version;
+			$url = str_replace('version=' .  $wp_version, 'version=' . $this->mangle_wp_version(), $url);
+			if ( !empty($wpmu_version) ) // old 2.9.2 WPMU
+				$url = str_replace('wpmu_version=' .  $wpmu_version, 'wpmu_version=' . $this->mangle_wp_version(), $url);
+	
+			return wp_remote_get($url, $args);
+		} elseif ( 0 !== strpos( $url, 'https://api.wordpress.org/plugins/' ) ) {
+			return wp_remote_post($url, $args);
+		} elseif ( 0 !== strpos( $url, 'https://api.wordpress.org/themes/' ) ) {
+			return wp_remote_post($url, $args);
+		}
 
-		return wp_remote_get($url, $args);
+		return $result;
 	}
 	
 	function action_update_option_wp_beta_tester_stream() {
