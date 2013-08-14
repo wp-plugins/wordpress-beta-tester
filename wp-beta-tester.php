@@ -8,7 +8,7 @@
 	Author URI: http://blog.ftwr.co.uk/
 	License: GPL v2 or later
 */
-/*	Copyright 2009-2011  Peter Westwood  (email : peter.westwood@ftwr.co.uk)
+/*	Copyright 2009-2013 Peter Westwood (email : peter.westwood@ftwr.co.uk)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as 
@@ -26,7 +26,7 @@
 class wp_beta_tester {
 	var $real_wp_version;
 	var $real_wpmu_version = false;
-	
+
 	function wp_beta_tester() {
 		add_action('admin_init', array(&$this, 'action_admin_init'));
 		add_action('admin_menu', array(&$this, 'action_admin_menu'));
@@ -36,7 +36,7 @@ class wp_beta_tester {
 		add_action('admin_head-plugins.php', array(&$this, 'action_admin_head_plugins_php'));
 		add_action('admin_head-update-core.php', array(&$this, 'action_admin_head_plugins_php'));
 	}
-	
+
 	function action_admin_head_plugins_php() {
 		// Workaround the check throttling in wp_version_check()
 		$st = get_site_transient( 'update_core' );
@@ -48,24 +48,24 @@ class wp_beta_tester {
 		//Can output an error here if current config drives version backwards
 		if ( $this->check_if_settings_downgrade() ) {
 			?>
-				<div id="message" class="error"><p><?php printf( __('<strong>Error:</strong> Your current <a href="%1$s">WordPress Beta Tester plugin configuration</a> will downgrade your install to a previous version - Please reconfigure it.', 'wp-beta-tester'), admin_url('tools.php?page=wp_beta_tester') ) ?></p></div>
+				<div id="message" class="error"><p><?php printf( __('<strong>Error:</strong> Your current <a href="%1$s">WordPress Beta Tester plugin configuration</a> will downgrade your install to a previous version - please reconfigure it.', 'wp-beta-tester'), admin_url('tools.php?page=wp_beta_tester') ) ?></p></div>
 			<?php
 		}
 	}
-	
+
 	function action_admin_init() {
 		register_setting( 'wp_beta_tester_options', 'wp_beta_tester_stream', array(&$this,'validate_setting') );
 	}
-	
+
 	function action_admin_menu() {
 		add_management_page(__('Beta Testing WordPress','wp-beta-tester'), __('Beta Testing','wp-beta-tester'), 'update_plugins', 'wp_beta_tester', array(&$this,'display_page'));
 	}
-	
+
 	function action_init() {
 		// Load our textdomain
 		load_plugin_textdomain('wp-beta-tester', false , basename(dirname(__FILE__)).'/languages');
 	}
-	
+
 	function filter_http_request($result, $args, $url) {
 		if ( $result || isset($args['_beta_tester']) )
 			return $result;
@@ -81,7 +81,7 @@ class wp_beta_tester {
 			$url = str_replace('version=' .  $wp_version, 'version=' . $this->mangle_wp_version(), $url);
 			if ( !empty($wpmu_version) ) // old 2.9.2 WPMU
 				$url = str_replace('wpmu_version=' .  $wpmu_version, 'wpmu_version=' . $this->mangle_wp_version(), $url);
-	
+
 			return wp_remote_get($url, $args);
 		} elseif ( 0 !== strpos( $url, 'https://api.wordpress.org/plugins/' ) ) {
 			return wp_remote_post($url, $args);
@@ -91,12 +91,12 @@ class wp_beta_tester {
 
 		return $result;
 	}
-	
+
 	function action_update_option_wp_beta_tester_stream() {
 		//Our option has changed so update the cached information pronto.
 		do_action('wp_version_check');
 	}
-	
+
 	function _get_preferred_from_update_core() {
 		if (!function_exists('get_preferred_from_update_core') )
 			require_once(ABSPATH . 'wp-admin/includes/update.php');
@@ -109,7 +109,7 @@ class wp_beta_tester {
 		}
 		return $preferred;
 	}
-	
+
 	function mangle_wp_version(){
 		$stream = get_option('wp_beta_tester_stream','point');
 		$preferred = $this->_get_preferred_from_update_core();
@@ -137,14 +137,14 @@ class wp_beta_tester {
 		}
 		return $wp_version;
 	}
-	
+
 	function check_if_settings_downgrade() {
 		global $wp_version;
 		$wp_real_version = explode('-', $wp_version);
 		$wp_mangled_version = explode('-', $this->mangle_wp_version());
 		return version_compare($wp_mangled_version[0], $wp_real_version[0], 'lt');
 	}
-	
+
 	function validate_setting($setting) {
 		if (!in_array($setting, array('point','unstable')))
 		{
@@ -164,23 +164,23 @@ class wp_beta_tester {
 	<div class="wrap"><?php screen_icon(); ?>
 		<h2><?php _e('Beta Testing WordPress','wp-beta-tester')?></h2>
 		<div class="updated fade">
-			<p><?php _e('<strong>Please note:</strong> Once you have switched your blog to one of these beta versions of software it will not always be possible to downgrade as the database structure maybe updated during the development of a major release.', 'wp-beta-tester'); ?></p>	
+			<p><?php _e('<strong>Please note:</strong> Once you have switched your blog to one of these beta versions of software, it will not always be possible to downgrade, as the database structure may be updated during the development of a major release.', 'wp-beta-tester'); ?></p>	
 		</div>
 			<?php if ('development' != $preferred->response) : ?>
 		<div class="updated fade">
-			<p><?php _e('<strong>Please note:</strong> There are no development builds of the beta stream you have choosen available so you will receieve normal update notifications.', 'wp-beta-tester'); ?></p>
+			<p><?php _e('<strong>Please note:</strong> There are no development builds of the beta stream you have choosen available, so you will receive normal update notifications.', 'wp-beta-tester'); ?></p>
 		</div>
 			<?php endif;?>
 			<?php $this->action_admin_head_plugins_php(); //Check configuration?>
 		<div>
-			<p><?php echo sprintf(__(	'By their nature these releases are unstable and should not be used anyplace where your data is important. So please <a href="%1$s">backup your database</a> before upgrading to a test release. In order to hear about the latest beta releases your best bet is to watch the <a href="%2$s">development blog</a> and the <a href="%3$s">beta forum</a>','wp-beta-tester'),
+			<p><?php echo sprintf(__(	'By their nature, these releases are unstable and should not be used anyplace where your data is important. So please <a href="%1$s">back up your database</a> before upgrading to a test release. In order to hear about the latest beta releases, your best bet is to watch the <a href="%2$s">development blog</a> and the <a href="%3$s">beta forum</a>.','wp-beta-tester'),
 										_x('http://codex.wordpress.org/Backing_Up_Your_Database', 'Url to database backup instructions', 'wp-beta-tester'),
-										_x('http://wordpress.org/development/', 'Url to development blog','wp-beta-tester'),
+										_x('http://make.wordpress.org/core/', 'Url to development blog','wp-beta-tester'),
 										_x('http://wordpress.org/support/forum/12', 'Url to beta support forum', 'wp-beta-tester') ); ?></p>
-			<p><?php echo sprintf(__(	'Thank you for helping in testing WordPress please <a href="%s">report any bugs you find</a>.', 'wp-beta-tester'),
-										_x('http://core.trac.wordpress.org/newticket', 'Url to raise a new trac ticket', 'wp-beta-tester') ); ?></p>
-	
-			<p><?php _e('By default your WordPress install uses the stable update stream, to return to this please deactivate this plugin', 'wp-beta-tester'); ?></p>
+			<p><?php echo sprintf(__(	'Thank you for helping by testing WordPress. Please <a href="%s">report any bugs you find</a>.', 'wp-beta-tester'),
+										_x('http://core.trac.wordpress.org/newticket', 'Url to create a new trac ticket', 'wp-beta-tester') ); ?></p>
+
+			<p><?php _e('By default, your WordPress install uses the stable update stream. To return to this, please deactivate this plugin.', 'wp-beta-tester'); ?></p>
 			<form method="post" action="options.php"><?php settings_fields('wp_beta_tester_options'); ?>
 			<fieldset><legend><?php _e('Please select the update stream you would like this blog to use:','wp-beta-tester')?></legend>
 				<?php
@@ -191,7 +191,7 @@ class wp_beta_tester {
 					<th><label><input name="wp_beta_tester_stream"
 						id="update-stream-point-nightlies" type="radio" value="point"
 						class="tog" <?php checked('point', $stream); ?> /><?php _e('Point release nightlies','wp-beta-tester');?></label></th>
-					<td><?php _e('This contains the work that is occuring on a branch in preperation for a x.x.x point release.  This should also be fairly stable but will be available before the branch is ready for beta.','wp-beta-tester'); ?></td>
+					<td><?php _e('This contains the work that is occurring on a branch in preparation for a x.x.x point release.  This should also be fairly stable but will be available before the branch is ready for beta.','wp-beta-tester'); ?></td>
 				</tr>
 				<tr>
 					<th><label><input name="wp_beta_tester_stream"
@@ -204,7 +204,7 @@ class wp_beta_tester {
 			<p class="submit"><input type="submit" class="button-primary"
 				value="<?php _e('Save Changes') ?>" /></p>
 			</form>
-			<p><?php echo sprintf(__( 'Why don\'t you <a href="%s">head on over and upgrade now</a>.','wp-beta-tester' ), 'update-core.php');  ?></p>
+			<p><?php echo sprintf(__( 'Why don\'t you <a href="%s">head on over and upgrade now</a>.','wp-beta-tester' ), 'update-core.php'); ?></p>
 		</div>
 	</div>
 <?php
