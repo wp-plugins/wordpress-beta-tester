@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal%4
 Contributors: westi
 Tested up to: 3.7
 Requires at least: 3.0.5
-Stable Tag: 0.97
+Stable Tag: 0.98
 
 == Description ==
 This plugin provides an easy way to get involved with Beta testing WordPress.
