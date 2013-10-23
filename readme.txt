@@ -19,6 +19,9 @@ Don't forget to backup before your start!
 
 == Changelog ==
 
+= 0.98 =
+* Unforce HTTPS for all api.wordpress.org requests.
+
 = 0.97 =
 * Force HTTPS for all api.wordpress.org requests.
 
