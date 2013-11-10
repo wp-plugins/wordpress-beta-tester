@@ -2,7 +2,7 @@
 Tags: beta, advanced, testing
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal%40ftwr%2eco%2euk&item_name=Peter%20Westwood%20WordPress%20Plugins&no_shipping=1&cn=Donation%20Notes&tax=0&currency_code=GBP&bn=PP%2dDonationsBF&charset=UTF%2d8
 Contributors: westi
-Tested up to: 3.7
+Tested up to: 3.8
 Requires at least: 3.0.5
 Stable Tag: 0.98
 
@@ -18,6 +18,9 @@ For the more adventerous there is the option to switch to the bleeding edge of d
 Don't forget to backup before your start!
 
 == Changelog ==
+
+= 0.99 =
+* Add support for HTTPS urls on WP.org as well as non-HTTPS ones.
 
 = 0.98 =
 * Unforce HTTPS for all api.wordpress.org requests.
