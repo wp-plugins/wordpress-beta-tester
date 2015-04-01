@@ -4,11 +4,11 @@
 	Plugin URI: http://wordpress.org/extend/plugins/wordpress-beta-tester/
 	Description: Allows you to easily upgrade to Beta releases.
 	Author: Peter Westwood
-	Version: 0.99
+	Version: 1.0
 	Author URI: http://blog.ftwr.co.uk/
 	License: GPL v2 or later
 */
-/*	Copyright 2009-2013 Peter Westwood (email : peter.westwood@ftwr.co.uk)
+/*	Copyright 2009-2015 Peter Westwood (email : peter.westwood@ftwr.co.uk)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as 
@@ -212,4 +212,3 @@ function wordpress_beta_tester_deactivate_or_activate() {
 }
 register_activation_hook( __FILE__, 'wordpress_beta_tester_deactivate_or_activate' );
 register_deactivation_hook( __FILE__, 'wordpress_beta_tester_deactivate_or_activate' );
-?>
